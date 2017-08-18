@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!-- Aqui se definen los elementos de xml -->
+
+    <xs:element name="dependencies">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="beans"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="beans">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="bean" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="bean">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+            <xs:attribute name="class" type="xs:string" use="required"/>
+            <xs:attribute name="scope" type="xs:string"/>
+            <xs:attribute name="init-method" type="xs:string"/>
+            <xs:attribute name="destroy-method" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
