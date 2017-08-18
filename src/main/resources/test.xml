@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dependencies xmlns="definitions.xsd"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+               xsi:schemaLocation="ianduran.com definitions.xsd" >
+    <beans>
+
+    </beans>
+</dependencies>
