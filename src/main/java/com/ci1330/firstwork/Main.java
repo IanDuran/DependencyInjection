@@ -11,8 +11,8 @@ import java.io.InputStream;
 
 public class Main {
     public static void main(String... args) {
-        try {
-            File file = new File("src\\main\\resources\\testa.xml");
+        /*try {
+            File file = new File("src\\main\\resources\\test.xml");
             InputStream is = new FileInputStream(file);
             Builder parser = new Builder();
             Document doc = parser.build(is);
@@ -30,6 +30,7 @@ public class Main {
             System.out.println(doc.toXML());
         } catch (Exception e) {
             System.out.println(e);
-        }
+        }*/
+        Parser parser = new Parser("src\\main\\resources\\test.xml");
     }
 }
