@@ -1,7 +1,7 @@
 <root>
-    <messages>
-        <message>Hola</message>
-        <message>Mundo</message>
-        <message>!</message>
-    </messages>
+    <beans>
+        <bean id="mess" class="src.main.java,ci1330.firstwork.annotations.Message">
+            <property name="message" value = "Hola de nuevo!"/>
+        </bean>
+    </beans>
 </root>
