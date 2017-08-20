@@ -1,10 +1,12 @@
-<beans>
-    <bean id="student" class="com.ci1330.firstwork.Student"/>
+<root>
+    <beans>
+        <bean id="student" class="com.ci1330.firstwork.Student"/>
 
-    <bean id="teacher" class="com.ci1330.firstwork.Teacher"/>
+        <bean id="teacher" class="com.ci1330.firstwork.Teacher"/>
 
-    <bean id="group" class="com.ci1330.firstwork.Group">
-        <property name="student" ref="student"/>
-        <property name="teacher" ref="teacher"/>
-    </bean>
-</beans>
+        <bean id="group" class="com.ci1330.firstwork.Group">
+            <property name="student" ref="student"/>
+            <property name="teacher" ref="teacher"/>
+        </bean>
+    </beans>
+</root>

@@ -30,6 +30,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }*/
-        Parser parser = new Parser("src\\main\\resources\\testa.xml");
+        //Parser parser = new Parser("src\\main\\resources\\test.xml");
+        Injector injector = new Injector("src\\main\\resources\\test.xml");
     }
 }

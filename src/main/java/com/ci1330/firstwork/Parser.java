@@ -33,7 +33,7 @@ public class Parser {
             Builder builder = new Builder();
             this.configurationFile = builder.build(inputStream); //faltaba el this, Ian parece de progra 1 en el 104....
             this.properties = new HashMap<String, List<Pair<String, String>>>();
-            parseXML();
+            this.parseXML();
             inputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,7 +43,7 @@ public class Parser {
     /**
      * Parses a XML configuration file.
      */
-    public void parseXML() {
+    private void parseXML() {
         try {
             Element root = this.configurationFile.getRootElement(); //este saca el raiz, que es el que engloba todoo
             Element child = root.getFirstChildElement("beans"); // este saca un hijo que tenga de tag el nombre que le paso
@@ -51,8 +51,8 @@ public class Parser {
             Element e;
             Elements attributes;
             Element attribute;
-            List props;
-            Pair prop;
+            List<Pair<String, String>> props;
+            Pair<String, String> prop;
             this.beans = new String[children.size()];
             this.classes = new String[children.size()];
             for (int i = 0; i < children.size(); i++) { //aca itero por cada message
@@ -81,7 +81,7 @@ public class Parser {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        printData(); //quitar
+        //printData(); //quitar
     }
 
 
