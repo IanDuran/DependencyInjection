@@ -1,14 +1,5 @@
 package com.ci1330.firstwork;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-
 public class Main {
     public static void main(String... args) {
         /*try {
@@ -39,6 +30,6 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }*/
-        Parser parser = new Parser("src\\main\\resources\\test.xml");
+        Parser parser = new Parser("src\\main\\resources\\testa.xml");
     }
 }
