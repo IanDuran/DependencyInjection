@@ -32,5 +32,8 @@ public class Main {
         }*/
         //Parser parser = new Parser("src\\main\\resources\\test.xml");
         Injector injector = new Injector("src\\main\\resources\\test.xml");
+        Group group = (Group)injector.getBeanByName("group");
+        Teacher t = group.getTeacher();
+        System.out.println(t.getName());
     }
 }

@@ -80,6 +80,20 @@ public class Injector {
         }
     }
 
+    public Object getBeanByName(String beanName){
+        return this.beanObjectsById.get(beanName);
+    }
+
+    public Object getBeanByType(String beanType){
+        try {
+            Class beanClass = Class.forName(beanType);
+            return this.beanObjectsByType.get(beanClass);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void printResults(){
         Set<Map.Entry<String, Class>> entries = beanClassMap.entrySet();
         Iterator<Map.Entry<String, Class>> iterator = entries.iterator();

@@ -11,4 +11,12 @@ public class Group {
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
 }
