@@ -1,10 +1,10 @@
 package com.ci1330.firstwork;
 
+import javafx.util.Pair;
+
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class Injector {
     private Parser parser;
@@ -12,16 +12,21 @@ public class Injector {
     //id -> clase
     private Map<String, Class> beanClassMap;
 
-    // propiedades de cada uno
-    private Map<Class, Object> beanObjects;
+    // Objetos por clase
+    private Map<Class, Object> beanObjectsByType;
+
+    //Objetos por id
+    private Map<String, Object> beanObjectsById;
 
     public Injector(String filepath) {
         this.parser = new Parser(filepath);
         this.beanClassMap = new HashMap<String, Class>();
-        this.beanObjects = new HashMap<Class, Object>();
+        this.beanObjectsByType = new HashMap<Class, Object>();
+        this.beanObjectsById = new HashMap<String, Object>();
         this.fillClassMap();
         this.initializeBeans();
-        printResults();
+        this.addDependencies();
+        System.out.println();
     }
 
     private void fillClassMap(){
@@ -44,7 +49,8 @@ public class Injector {
             try {
                 Constructor constructor = currEntry.getValue().getConstructor();
                 Object instance = constructor.newInstance();
-                beanObjects.put(currEntry.getValue(), instance);
+                this.beanObjectsById.put(currEntry.getKey(), instance);
+                this.beanObjectsByType.put(currEntry.getValue(), instance);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -53,7 +59,25 @@ public class Injector {
     }
 
     private void addDependencies(){
-
+        Set<Map.Entry<String, Class>> entrySet = this.beanClassMap.entrySet();
+        Iterator<Map.Entry<String, Class>> entryIterator = entrySet.iterator();
+        while(entryIterator.hasNext()){
+            Map.Entry<String, Class> currEntry = entryIterator.next();
+            List<Pair<String, String>> list = this.parser.getBeanProperties(currEntry.getKey());
+            if(list != null){
+                for(int i = 0; i < list.size(); i++){
+                    String propertyName = list.get(i).getKey();
+                    String propertyReference = list.get(i).getValue();
+                    try {
+                        Field currField = currEntry.getValue().getDeclaredField(propertyName);
+                        currField.setAccessible(true);
+                        currField.set(beanObjectsById.get(currEntry.getKey()), beanObjectsById.get(propertyReference));
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     public void printResults(){

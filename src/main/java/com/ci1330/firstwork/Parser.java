@@ -15,6 +15,7 @@ public class Parser {
     private Document configurationFile;
     private String[] beans;
     private String[] classes;
+    //name -> ref
     private Map<String, List<Pair<String, String>>> properties;
     /*El principal es un mapa para que los sacados sean O(1)
     El key es el id del bean
