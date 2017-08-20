@@ -1,7 +1,12 @@
 <root>
     <beans>
         <bean id="mess" class="src.main.java,ci1330.firstwork.annotations.Message">
-            <property name="message" value = "Hola de nuevo!"/>
+            <property name="message" value="Hola de nuevo!"/>
+            <property name="message" value="Pura vida!"/>
+        </bean>
+
+        <bean id="mess2" class="src.main.java,ci1330.firstwork.annotations.Message">
+            <property name="message" value="Que mop"/>
         </bean>
     </beans>
 </root>

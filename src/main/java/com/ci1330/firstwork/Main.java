@@ -22,12 +22,20 @@ public class Main {
             Element child = root.getFirstChildElement("beans"); // este saca un hijo que tenga de tag el nombre que le paso
             Elements children = child.getChildElements(); //este saca todos los hijos de ese elemento, que serian todos los messages
             Element e;
+            Elements attributes;
+            Element attribute;
             for(int i=0;i<children.size();i++){ //aca itero por cada message
                 e = children.get(i); //saco el n-esimo hijo
                 System.out.println(e.getAttribute(0).getQualifiedName()+"="+e.getAttribute(0).getValue()); //imprimo el valor
                 System.out.println(e.getAttribute(1).getQualifiedName()+"="+e.getAttribute(1).getValue()); //imprimo el valor
+                attributes = e.getChildElements();
+                for(int j=0;j<attributes.size();j++){
+                    attribute = attributes.get(j);
+                    System.out.println(attribute.getAttribute(0).getQualifiedName() + "=" + attribute.getAttribute(0).getValue());
+                    System.out.println(attribute.getAttribute(1).getQualifiedName() + "=" + attribute.getAttribute(1).getValue());
+                }
              } //si lo ve enredado, recuerde que un XML tiene forma de arbol.
-            System.out.println(doc.toXML());
+            //System.out.println(doc.toXML());
         } catch (Exception e) {
             System.out.println(e);
         }
