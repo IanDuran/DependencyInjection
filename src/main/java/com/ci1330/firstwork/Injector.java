@@ -18,6 +18,10 @@ public class Injector {
     //Objetos por id
     private Map<String, Object> beanObjectsById;
 
+    /**
+     * Create parser instance, get the 3 structures from it, fill class map, initialize beans and add dependencies to them.
+     * @param filepath the path of the XML file to be parsed.
+     */
     public Injector(String filepath) {
         this.parser = new Parser(filepath);
         this.beanClassMap = new HashMap<String, Class>();
@@ -29,6 +33,9 @@ public class Injector {
         System.out.println();
     }
 
+    /**
+     * Fill class map with data from the arrays of the parser.
+     */
     private void fillClassMap(){
         String[] beanIds = this.parser.getBeanNames();
         String[] beanClasses = this.parser.getBeanClasses();
@@ -41,6 +48,9 @@ public class Injector {
         }
     }
 
+    /**
+     * Initialize beans from bean class map.
+     */
     private void initializeBeans(){
         Set<Map.Entry<String, Class>> entrySet = this.beanClassMap.entrySet();
         Iterator<Map.Entry<String, Class>> iterator = entrySet.iterator();
@@ -58,6 +68,9 @@ public class Injector {
         System.out.println("Initialized beans");
     }
 
+    /**
+     * Add dependencies to the beans from bean class map.
+     */
     private void addDependencies(){
         Set<Map.Entry<String, Class>> entrySet = this.beanClassMap.entrySet();
         Iterator<Map.Entry<String, Class>> entryIterator = entrySet.iterator();
@@ -80,10 +93,20 @@ public class Injector {
         }
     }
 
+    /**
+     * Return a bean matching the given name.
+     * @param beanName the bean name.
+     * @return the resulting bean.
+     */
     public Object getBeanByName(String beanName){
         return this.beanObjectsById.get(beanName);
     }
 
+    /**
+     * Return a bean matching the given type.
+     * @param beanType the bean name.
+     * @return the resulting bean.
+     */
     public Object getBeanByType(String beanType){
         try {
             Class beanClass = Class.forName(beanType);
@@ -94,7 +117,8 @@ public class Injector {
         return null;
     }
 
-    public void printResults(){
+
+    public void printResults(){ //quitar
         Set<Map.Entry<String, Class>> entries = beanClassMap.entrySet();
         Iterator<Map.Entry<String, Class>> iterator = entries.iterator();
         while(iterator.hasNext()){
