@@ -1,7 +1,12 @@
 <root>
-    <messages>
-        <message>Hola</message>
-        <message>Mundo</message>
-        <message>!</message>
-    </messages>
+    <beans>
+        <bean id="mess" class="src.main.java,ci1330.firstwork.annotations.Message">
+            <property name="message" ref="Hola de nuevo!"/>
+            <property name="message" ref="Pura vida!"/>
+        </bean>
+
+        <bean id="mess2" class="src.main.java,ci1330.firstwork.annotations.Message">
+            <property name="message" ref="Que mop"/>
+        </bean>
+    </beans>
 </root>
