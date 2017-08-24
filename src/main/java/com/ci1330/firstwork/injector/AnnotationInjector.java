@@ -2,8 +2,13 @@ package com.ci1330.firstwork.injector;
 
 public class AnnotationInjector extends AbstractInjector{
 
+    private boolean autowireByType = true;
+
     public AnnotationInjector(String filepath){
         super(filepath);
+        this.fillClassMap();
+        this.initializeBeans();
+        this.addDependencies();
     }
 
     @Override

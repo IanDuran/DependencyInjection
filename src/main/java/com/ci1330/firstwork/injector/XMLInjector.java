@@ -19,7 +19,6 @@ public class XMLInjector extends AbstractInjector{
         this.fillClassMap();
         this.initializeBeans();
         this.addDependencies();
-        System.out.println();
     }
 
     /**
