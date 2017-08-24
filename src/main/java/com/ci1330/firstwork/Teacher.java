@@ -4,7 +4,7 @@ public class Teacher {
     private String name;
 
     public Teacher(){
-        this.name = "El Barto";
+        this.name = "Carlos Vargas";
     }
 
     public String getName() {

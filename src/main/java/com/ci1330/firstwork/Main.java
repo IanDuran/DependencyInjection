@@ -1,39 +1,27 @@
 package com.ci1330.firstwork;
 
+import com.ci1330.firstwork.annotations.Service;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 public class Main {
     public static void main(String... args) {
-        /*try {
-            File file = new File("src\\main\\resources\\test.xml");
-            InputStream is = new FileInputStream(file);
-            Builder parser = new Builder();
-            Document doc = parser.build(is);
-            //voy a hacerlo pasito por pasito
-            Element root = doc.getRootElement(); //este saca el raiz, que es el que engloba todoo
-            //getQualifiedName me da lo que hay dentro del tag
-            Element child = root.getFirstChildElement("beans"); // este saca un hijo que tenga de tag el nombre que le paso
-            Elements children = child.getChildElements(); //este saca todos los hijos de ese elemento, que serian todos los messages
-            Element e;
-            Elements attributes;
-            Element attribute;
-            for(int i=0;i<children.size();i++){ //aca itero por cada message
-                e = children.get(i); //saco el n-esimo hijo
-                System.out.println(e.getAttribute(0).getQualifiedName()+"="+e.getAttribute(0).getValue()); //imprimo el valor
-                System.out.println(e.getAttribute(1).getQualifiedName()+"="+e.getAttribute(1).getValue()); //imprimo el valor
-                attributes = e.getChildElements();
-                for(int j=0;j<attributes.size();j++){
-                    attribute = attributes.get(j);
-                    System.out.println(attribute.getAttribute(0).getQualifiedName() + "=" + attribute.getAttribute(0).getValue());
-                    System.out.println(attribute.getAttribute(1).getQualifiedName() + "=" + attribute.getAttribute(1).getValue());
-                }
-             } //si lo ve enredado, recuerde que un XML tiene forma de arbol.
-            //System.out.println(doc.toXML());
-        } catch (Exception e) {
-            System.out.println(e);
-        }*/
-        //Parser parser = new Parser("src\\main\\resources\\test.xml");
-        Injector injector = new Injector("src\\main\\resources\\test.xml");
+        Parser parser = new Parser("src/main/resources/test.xml");
+        Injector injector = new Injector("src/main/resources/test.xml"); //src\main\resources\test.xml
         Group group = (Group)injector.getBeanByName("group");
         Teacher t = group.getTeacher();
-        System.out.println(t.getName());
+        parser.getClasses();
+        //System.out.println(t.getName());
+        /*Method[] methods = Parser.class.getDeclaredMethods();
+        for(Method method:methods) {
+            Annotation[] annotations = method.getAnnotations();
+            for (Annotation annotation : annotations) {
+                if (annotation instanceof Service) {
+                    Service a = (Service) annotation;
+                    System.out.println(a.value());
+                }
+            }
+        }*/
     }
 }
