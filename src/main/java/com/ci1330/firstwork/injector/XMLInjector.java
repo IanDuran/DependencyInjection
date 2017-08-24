@@ -1,12 +1,13 @@
-package com.ci1330.firstwork;
+package com.ci1330.firstwork.injector;
 
+import com.ci1330.firstwork.Parser;
 import javafx.util.Pair;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class Injector {
+public class XMLInjector implements Injector{
     private Parser parser;
 
     //id -> clase
@@ -22,7 +23,7 @@ public class Injector {
      * Create parser instance, get the 3 structures from it, fill class map, initialize beans and add dependencies to them.
      * @param filepath the path of the XML file to be parsed.
      */
-    public Injector(String filepath) {
+    public XMLInjector(String filepath) {
         this.parser = new Parser(filepath);
         this.beanClassMap = new HashMap<String, Class>();
         this.beanObjectsByType = new HashMap<Class, Object>();
