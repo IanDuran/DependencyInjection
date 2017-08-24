@@ -8,9 +8,9 @@ import java.lang.reflect.Method;
 public class Main {
     public static void main(String... args) {
         Parser parser = new Parser("src/main/resources/test.xml");
-        Injector injector = new Injector("src/main/resources/test.xml"); //src\main\resources\test.xml
-        Group group = (Group)injector.getBeanByName("group");
-        Teacher t = group.getTeacher();
+        //XMLInjector injector = new XMLInjector("src/main/resources/test.xml"); //src\main\resources\test.xml
+        //Group group = (Group)injector.getBeanByName("group");
+        //Teacher t = group.getTeacher();
         parser.getClasses();
         //System.out.println(t.getName());
         /*Method[] methods = Parser.class.getDeclaredMethods();
