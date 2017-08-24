@@ -2,6 +2,14 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 <!-- Aqui se definen los elementos de xml -->
 
+    <xs:element name="annotation-config"/>
+
+    <xs:element name="component-scan">
+        <xs:complexType>
+            <xs:attribute name="base-package" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
     <xs:element name="dependencies">
         <xs:complexType>
             <xs:sequence>

@@ -1,5 +1,6 @@
 package com.ci1330.firstwork;
 
+import com.ci1330.firstwork.annotations.Service;
 import javafx.util.Pair;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.util.*;
 
 public class Parser {
+
     private Document configurationFile;
     private String[] beans;
     private String[] classes;
@@ -41,9 +43,38 @@ public class Parser {
         }
     }
 
+    public void getClasses(){
+        Element root = this.configurationFile.getRootElement(); //este saca el raiz, que es el que engloba todoo
+        if(root.getFirstChildElement("annotation-config")!=null){
+            Element component_scan = root.getFirstChildElement("component-scan");
+            if(component_scan!=null){
+                String projectPackage = component_scan.getAttribute(0).getValue().replace(".","/");
+                // /home/josue/IdeaProjects/DependencyInjection/src/main/java/com/ci1330/firstwork
+                //System.out.println(projectPackage);
+                File f = new File(projectPackage);
+                File[] fs = f.listFiles();
+                this.getFiles(fs);
+            }
+        }
+    }
+
+    private void getFiles(File[] files){
+        if(files != null){
+            for(File file:files) {
+                if (file.isDirectory()) {
+                    System.out.println("Directory: " + file.getName());
+                    getFiles(file.listFiles());
+                } else {
+                    System.out.println("File: " + file.getName());
+                }
+            }
+        }
+    }
+
     /**
      * Parses a XML configuration file.
      */
+    @Service(value = "Hola!")
     private void parseXML() {
         try {
             Element root = this.configurationFile.getRootElement(); //este saca el raiz, que es el que engloba todoo
