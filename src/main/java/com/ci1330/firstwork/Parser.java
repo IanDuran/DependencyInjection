@@ -17,6 +17,7 @@ public class Parser {
     private Document configurationFile;
     private String[] beans;
     private String[] classes;
+    private String[] packages;
     //name -> ref
     private Map<String, List<Pair<String, String>>> properties;
     /*El principal es un mapa para que los sacados sean O(1)
@@ -43,34 +44,6 @@ public class Parser {
         }
     }
 
-    public void getClasses(){
-        Element root = this.configurationFile.getRootElement(); //este saca el raiz, que es el que engloba todoo
-        if(root.getFirstChildElement("annotation-config")!=null){
-            Element component_scan = root.getFirstChildElement("component-scan");
-            if(component_scan!=null){
-                String projectPackage = component_scan.getAttribute(0).getValue().replace(".","/");
-                // /home/josue/IdeaProjects/DependencyInjection/src/main/java/com/ci1330/firstwork
-                //System.out.println(projectPackage);
-                File f = new File(projectPackage);
-                File[] fs = f.listFiles();
-                this.getFiles(fs);
-            }
-        }
-    }
-
-    private void getFiles(File[] files){
-        if(files != null){
-            for(File file:files) {
-                if (file.isDirectory()) {
-                    System.out.println("Directory: " + file.getName());
-                    getFiles(file.listFiles());
-                } else {
-                    System.out.println("File: " + file.getName());
-                }
-            }
-        }
-    }
-
     /**
      * Parses a XML configuration file.
      */
@@ -78,6 +51,17 @@ public class Parser {
     private void parseXML() {
         try {
             Element root = this.configurationFile.getRootElement(); //este saca el raiz, que es el que engloba todoo
+            if(root.getFirstChildElement("annotation-config")!=null){
+                Element component_scan = root.getFirstChildElement("components-scan");
+                if(component_scan!=null){
+                    Elements component_scan_children = component_scan.getChildElements();
+                    this.packages = new String[component_scan_children.size()];
+                    for(int i = 0; i < component_scan_children.size(); i++){
+                        Element child = component_scan_children.get(i);
+                        this.packages[i] = child.getAttribute(0).getValue();
+                    }
+                }
+            }
             Element child = root.getFirstChildElement("beans"); // este saca un hijo que tenga de tag el nombre que le paso
             Elements children = child.getChildElements(); //este saca todos los hijos de ese elemento, que serian todos los messages
             Element e;
@@ -166,34 +150,12 @@ public class Parser {
     public List<Pair<String, String>> getBeanProperties(String beanClass) {
         return this.properties.get(beanClass);
     }
+
+    /**
+     * Returns an array filled with packages to scan, if annotations were used.
+     * @return the package array.
+     */
+    public String[] getPackages(){
+        return this.packages;
+    }
 }
-
-    /*try {
-            File file = new File("src\\main\\resources\\test.xml");
-            InputStream is = new FileInputStream(file);
-            Builder parser = new Builder();
-            Document doc = parser.build(is);
-            //voy a hacerlo pasito por pasito
-            Element root = doc.getRootElement(); //este saca el raiz, que es el que engloba todoo
-            //getQualifiedName me da lo que hay dentro del tag
-            Element child = root.getFirstChildElement("beans"); // este saca un hijo que tenga de tag el nombre que le paso
-            Elements children = child.getChildElements(); //este saca todos los hijos de ese elemento, que serian todos los messages
-            Element e;
-            Elements attributes;
-            Element attribute;
-            for(int i=0;i<children.size();i++){ //aca itero por cada message
-                e = children.get(i); //saco el n-esimo hijo
-                System.out.println(e.getAttribute(0).getQualifiedName()+"="+e.getAttribute(0).getValue()); //imprimo el valor
-                System.out.println(e.getAttribute(1).getQualifiedName()+"="+e.getAttribute(1).getValue()); //imprimo el valor
-                attributes = e.getChildElements();
-                for(int j=0;j<attributes.size();j++){
-                    attribute = attributes.get(j);
-                    System.out.println(attribute.getAttribute(0).getQualifiedName() + "=" + attribute.getAttribute(0).getValue());
-                    System.out.println(attribute.getAttribute(1).getQualifiedName() + "=" + attribute.getAttribute(1).getValue());
-                }
-             } //si lo ve enredado, recuerde que un XML tiene forma de arbol.
-            //System.out.println(doc.toXML());
-        } catch (Exception e) {
-            System.out.println(e);
-        }*/
-

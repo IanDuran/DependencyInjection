@@ -1,7 +1,9 @@
 <root>
 
     <annotation-config/>
-    <component-scan base-package="com.ci1330.firstwork"/>
+    <components-scan>
+        <package base-package="com.ci1330.firstwork"/>>
+    </components-scan>
 
     <beans>
         <bean id="student" class="com.ci1330.firstwork.Student"/>

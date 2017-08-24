@@ -4,9 +4,17 @@
 
     <xs:element name="annotation-config"/>
 
-    <xs:element name="component-scan">
+    <xs:element name="components-scan">
         <xs:complexType>
-            <xs:attribute name="base-package" type="xs:string"/>
+            <xs:sequence>
+                <xs:element ref="package"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="package">
+        <xs:complexType>
+            <xs:attribute name="base-package" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
 

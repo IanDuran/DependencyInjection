@@ -11,7 +11,7 @@ public class Main {
         Injector injector = new Injector("src/main/resources/test.xml"); //src\main\resources\test.xml
         Group group = (Group)injector.getBeanByName("group");
         Teacher t = group.getTeacher();
-        parser.getClasses();
+        parser.getPackages();
         //System.out.println(t.getName());
         /*Method[] methods = Parser.class.getDeclaredMethods();
         for(Method method:methods) {
