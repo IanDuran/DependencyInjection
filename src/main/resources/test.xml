@@ -8,7 +8,7 @@
     <beans>
         <bean id="student" class="com.ci1330.firstwork.Student"/>
 
-        <bean id="teacher" class="com.ci1330.firstwork.Teacher"/>
+        <bean id="teacher" scope="prototype" class="com.ci1330.firstwork.Teacher"/>
 
         <bean id="group" class="com.ci1330.firstwork.Group">
             <property name="student" ref="student"/>

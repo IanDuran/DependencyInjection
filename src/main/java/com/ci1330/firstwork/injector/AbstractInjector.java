@@ -18,11 +18,14 @@ public abstract class AbstractInjector implements Injector{
     //Objetos por id
     protected Map<String, Object> beanObjectsById;
 
+    protected Map<Class, String> beanScopes;
+
     protected AbstractInjector(String filepath){
         this.parser = new Parser(filepath);
         this.beanClassMap = new HashMap<String, Class>();
         this.beanObjectsByType = new HashMap<Class, Object>();
         this.beanObjectsById = new HashMap<String, Object>();
+        this.beanScopes = new HashMap<Class, String>();
     }
 
     public void fillClassMap() {

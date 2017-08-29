@@ -10,13 +10,15 @@ import java.lang.reflect.Method;
 
 public class Main {
     public static void main(String... args) {
-        Injector injector = new AnnotationInjector("src/main/resources/test.xml");
+        Injector injector = new XMLInjector("src/main/resources/test.xml");
+
         //Parser parser = new Parser("src/main/resources/test.xml");
         //Injector injector = new XMLInjector("src/main/resources/test.xml"); //src\main\resources\test.xml
         //Group group = (Group)injector.getBeanByName("group");
-        //Teacher t = group.getTeacher();
+        Teacher t = (Teacher) injector.getBeanByName("teacher");
+
         //parser.getPackages();
-        //System.out.println(t.getName());
+        System.out.println(t.getName());
         /*Method[] methods = Parser.class.getDeclaredMethods();
         for(Method method:methods) {
             Annotation[] annotations = method.getAnnotations();

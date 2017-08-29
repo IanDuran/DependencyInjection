@@ -18,6 +18,8 @@ public class Parser {
     private String[] beans;
     private String[] classes;
     private String[] packages;
+    private String[] scopes;
+
     //name -> ref
     private Map<String, List<Pair<String, String>>> properties;
     /*El principal es un mapa para que los sacados sean O(1)
@@ -71,10 +73,15 @@ public class Parser {
             Pair<String, String> prop;
             this.beans = new String[children.size()];
             this.classes = new String[children.size()];
+            this.scopes = new String[children.size()];
             for (int i = 0; i < children.size(); i++) { //aca itero por cada message
                 e = children.get(i); //saco el n-esimo hijo
-                this.beans[i] = e.getAttribute(0).getValue(); //meto el id a la lista de ids de beans
-                this.classes[i] = e.getAttribute(1).getValue(); //meto la clase(nombre) a la lista de clases de beans
+                this.beans[i] = e.getAttributeValue("id"); //meto el id a la lista de ids de beans
+                this.classes[i] = e.getAttributeValue("class"); //meto la clase(nombre) a la lista de clases de beans
+                this.scopes[i] = e.getAttributeValue("scope");
+                if(this.scopes[i] == null)
+                    this.scopes[i] = "singleton";//Singleton por default
+                System.out.println(this.scopes[i]);
                 //System.out.print(e.getAttribute(0).getQualifiedName()+"="+e.getAttribute(0).getValue()+" "); //imprimo el valor
                 //System.out.println(e.getAttribute(1).getQualifiedName()+"="+e.getAttribute(1).getValue()); //imprimo el valor
                 attributes = e.getChildElements(); //saco todos los hijos, que seran los properties
@@ -157,5 +164,9 @@ public class Parser {
      */
     public String[] getPackages(){
         return this.packages;
+    }
+
+    public String[] getScopes(){
+        return this.scopes;
     }
 }

@@ -1,6 +1,5 @@
 package com.ci1330.firstwork.injector;
 
-import com.ci1330.firstwork.Parser;
 import javafx.util.Pair;
 
 import java.lang.reflect.Constructor;
@@ -28,9 +27,11 @@ public class XMLInjector extends AbstractInjector{
     public void fillClassMap(){
         String[] beanIds = super.parser.getBeanNames();
         String[] beanClasses = super.parser.getBeanClasses();
+        String[] beanScopes = super.parser.getScopes();
         for (int i = 0; i < beanIds.length; i++) {
             try {
                 super.beanClassMap.put(beanIds[i], Class.forName(beanClasses[i]));
+                super.beanScopes.put(Class.forName(beanClasses[i]), beanScopes[i]);
             }catch(ClassNotFoundException e){
                 e.printStackTrace();
             }
@@ -46,13 +47,15 @@ public class XMLInjector extends AbstractInjector{
         Iterator<Map.Entry<String, Class>> iterator = entrySet.iterator();
         while(iterator.hasNext()){
             Map.Entry<String, Class> currEntry = iterator.next();
-            try {
-                Constructor constructor = currEntry.getValue().getConstructor();
-                Object instance = constructor.newInstance();
-                super.beanObjectsById.put(currEntry.getKey(), instance);
-                super.beanObjectsByType.put(currEntry.getValue(), instance);
-            }catch (Exception e){
-                e.printStackTrace();
+            if(super.beanScopes.get(currEntry.getValue()).equals("singleton")) {
+                try {
+                    Constructor constructor = currEntry.getValue().getConstructor();
+                    Object instance = constructor.newInstance();
+                    super.beanObjectsById.put(currEntry.getKey(), instance);
+                    super.beanObjectsByType.put(currEntry.getValue(), instance);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         System.out.println("Initialized beans");
@@ -75,13 +78,51 @@ public class XMLInjector extends AbstractInjector{
                     try {
                         Field currField = currEntry.getValue().getDeclaredField(propertyName);
                         currField.setAccessible(true);
-                        currField.set(super.beanObjectsById.get(currEntry.getKey()), super.beanObjectsById.get(propertyReference));
+                        if(super.beanScopes.get(currField.getType()).equals("singleton"))
+                            currField.set(super.beanObjectsById.get(currEntry.getKey()), super.beanObjectsById.get(propertyReference));
+
+                        else
+                            this.insertPrototypeDependencies(super.beanObjectsById.get(currEntry.getKey()), currField);
+
                     }catch(Exception e){
                         e.printStackTrace();
                     }
                 }
             }
         }
+    }
+
+    private void insertPrototypeDependencies(Object instance, Field field){
+        try{
+            Constructor constructor = field.getType().getConstructor();
+            Object initializedField = constructor.newInstance();
+            field.set(instance, initializedField);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private Object getPrototypeBeanByName(String beanName){
+        Object prototypeBean = null;
+        try {
+            Constructor constructor = super.beanClassMap.get(beanName).getConstructor();
+            prototypeBean = constructor.newInstance();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return prototypeBean;
+    }
+
+    private Object getPrototypeBeanByClass(Class beanClass){
+        Object prototypeBean = null;
+        try{
+            Constructor constructor = beanClass.getConstructor();
+            prototypeBean = constructor.newInstance();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return prototypeBean;
     }
 
     /**
@@ -91,7 +132,14 @@ public class XMLInjector extends AbstractInjector{
      */
     @Override
     public Object getBeanByName(String beanName){
-        return super.beanObjectsById.get(beanName);
+        Object bean;
+        if(super.beanScopes.get(super.beanClassMap.get(beanName)).equals("singleton"))
+            bean = super.beanObjectsById.get(beanName);
+
+        else
+            bean = this.getPrototypeBeanByName(beanName);
+
+        return bean;
     }
 
     /**
@@ -101,13 +149,18 @@ public class XMLInjector extends AbstractInjector{
      */
     @Override
     public Object getBeanByType(String beanType){
+        Object bean = null;
         try {
             Class beanClass = Class.forName(beanType);
-            return super.beanObjectsByType.get(beanClass);
+            if(super.beanScopes.get(beanClass).equals("singleton"))
+                bean = super.beanObjectsByType.get(beanClass);
+            else
+                bean = this.getPrototypeBeanByClass(beanClass);
+
         }catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return bean;
     }
 
 
