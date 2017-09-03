@@ -1,20 +1,25 @@
 package com.ci1330.firstwork.injector;
 
+import com.ci1330.firstwork.Parser;
 import javafx.util.Pair;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class XMLInjector extends AbstractInjector{
 
 
     /**
-     * Create parser instance, get the 3 structures from it, fill class map, initialize beans and add dependencies to them.
-     * @param filepath the path of the XML file to be parsed.
+     * Get the 3 structures from parser, fill class map, initialize beans and add dependencies to them.
+     * @param parser the parser.
      */
-    public XMLInjector(String filepath) {
-        super(filepath);
+    public XMLInjector(Parser parser) {
+        super();
+        super.parser = parser;
         this.fillClassMap();
         this.initializeBeans();
         this.addDependencies();
@@ -37,6 +42,7 @@ public class XMLInjector extends AbstractInjector{
             }
         }
     }
+
 
     /**
      * Initialize beans from bean class map.
@@ -80,7 +86,6 @@ public class XMLInjector extends AbstractInjector{
                         currField.setAccessible(true);
                         if(super.beanScopes.get(currField.getType()).equals("singleton"))
                             currField.set(super.beanObjectsById.get(currEntry.getKey()), super.beanObjectsById.get(propertyReference));
-
                         else
                             this.insertPrototypeDependencies(super.beanObjectsById.get(currEntry.getKey()), currField);
 
@@ -91,6 +96,7 @@ public class XMLInjector extends AbstractInjector{
             }
         }
     }
+
 
     private void insertPrototypeDependencies(Object instance, Field field){
         try{

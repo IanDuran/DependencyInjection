@@ -1,24 +1,25 @@
 package com.ci1330.firstwork;
 
-import com.ci1330.firstwork.annotations.Service;
 import com.ci1330.firstwork.injector.AnnotationInjector;
 import com.ci1330.firstwork.injector.Injector;
 import com.ci1330.firstwork.injector.XMLInjector;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
 public class Main {
     public static void main(String... args) {
-        Injector injector = new XMLInjector("src/main/resources/test.xml");
-
+        Parser parser = new Parser("src/main/resources/test.xml");
+        Injector injector;
+        if(parser.getConfigType()){
+            injector = new AnnotationInjector(parser);
+        } else {
+            injector = new XMLInjector(parser);
+        }
         //Parser parser = new Parser("src/main/resources/test.xml");
         //Injector injector = new XMLInjector("src/main/resources/test.xml"); //src\main\resources\test.xml
         //Group group = (Group)injector.getBeanByName("group");
-        Teacher t = (Teacher) injector.getBeanByName("teacher");
+        //Teacher t = (Teacher) injector.getBeanByName("teacher");
 
         //parser.getPackages();
-        System.out.println(t.getName());
+        //System.out.println(t.getName());
         /*Method[] methods = Parser.class.getDeclaredMethods();
         for(Method method:methods) {
             Annotation[] annotations = method.getAnnotations();

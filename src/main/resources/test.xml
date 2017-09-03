@@ -6,11 +6,11 @@
     </components-scan>
 
     <beans>
-        <bean id="student" class="com.ci1330.firstwork.Student"/>
+        <bean id="student" class="com.ci1330.firstwork.Student" autowiring="byName"/>
 
-        <bean id="teacher" scope="prototype" class="com.ci1330.firstwork.Teacher"/>
+        <bean id="teacher" scope="prototype" class="com.ci1330.firstwork.Teacher" autowiring="byName"/>
 
-        <bean id="group" class="com.ci1330.firstwork.Group">
+        <bean id="group" class="com.ci1330.firstwork.Group" autowiring="byType">
             <property name="student" ref="student"/>
             <property name="teacher" ref="teacher"/>
         </bean>

@@ -20,8 +20,10 @@ public abstract class AbstractInjector implements Injector{
 
     protected Map<Class, String> beanScopes;
 
-    protected AbstractInjector(String filepath){
-        this.parser = new Parser(filepath);
+    protected Map<Class,String> beanAutowirings;
+
+    protected AbstractInjector(){
+        //this.parser = new Parser(filepath);
         this.beanClassMap = new HashMap<String, Class>();
         this.beanObjectsByType = new HashMap<Class, Object>();
         this.beanObjectsById = new HashMap<String, Object>();

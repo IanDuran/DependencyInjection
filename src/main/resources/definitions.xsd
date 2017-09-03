@@ -39,6 +39,7 @@
             <xs:attribute name="id" type="xs:string" use="required"/>
             <xs:attribute name="class" type="xs:string" use="required"/>
             <xs:attribute name="scope" type="xs:string"/>
+            <xs:attribute name="autowiring" type="xs:string"/>
             <xs:attribute name="init-method" type="xs:string"/>
             <xs:attribute name="destroy-method" type="xs:string"/>
         </xs:complexType>
