@@ -7,14 +7,16 @@
     <xs:element name="components-scan">
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="package"/>
+                <xs:element ref="sbean" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="package">
+
+    <xs:element name="sbean">
         <xs:complexType>
-            <xs:attribute name="base-package" type="xs:string" use="required"/>
+            <xs:attribute name="class" type="xs:string" use="required"/>
+            <xs:attribute name="autowiring" type="xs:string"/>
         </xs:complexType>
     </xs:element>
 
@@ -39,7 +41,6 @@
             <xs:attribute name="id" type="xs:string" use="required"/>
             <xs:attribute name="class" type="xs:string" use="required"/>
             <xs:attribute name="scope" type="xs:string"/>
-            <xs:attribute name="autowiring" type="xs:string"/>
             <xs:attribute name="init-method" type="xs:string"/>
             <xs:attribute name="destroy-method" type="xs:string"/>
         </xs:complexType>

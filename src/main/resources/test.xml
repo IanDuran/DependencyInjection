@@ -2,15 +2,16 @@
 
     <annotation-config/>
     <components-scan>
-        <package base-package="com.ci1330.firstwork"/>>
+        <sbean class="com.ci1330.firstwork.Teacher" autowiring="byName"/>
+        <sbean class="com.ci1330.firstwork.Student" /><!-- autowiring="byType" -->
     </components-scan>
 
     <beans>
-        <bean id="student" class="com.ci1330.firstwork.Student" autowiring="byName"/>
+        <bean id="student" class="com.ci1330.firstwork.Student"/>
 
-        <bean id="teacher" scope="prototype" class="com.ci1330.firstwork.Teacher" autowiring="byName"/>
+        <bean id="teacher" scope="prototype" class="com.ci1330.firstwork.Teacher"/>
 
-        <bean id="group" class="com.ci1330.firstwork.Group" autowiring="byType">
+        <bean id="group" class="com.ci1330.firstwork.Group">
             <property name="student" ref="student"/>
             <property name="teacher" ref="teacher"/>
         </bean>

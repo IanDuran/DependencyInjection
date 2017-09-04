@@ -28,6 +28,7 @@ public abstract class AbstractInjector implements Injector{
         this.beanObjectsByType = new HashMap<Class, Object>();
         this.beanObjectsById = new HashMap<String, Object>();
         this.beanScopes = new HashMap<Class, String>();
+        this.beanAutowirings = new HashMap<Class, String>();
     }
 
     public void fillClassMap() {

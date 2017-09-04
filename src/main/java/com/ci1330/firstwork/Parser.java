@@ -10,14 +10,16 @@ import nu.xom.Elements;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class Parser {
 
     private Document configurationFile;
     private String[] beans;
     private String[] classes;
-    private String[] packages;
     private String[] scopes;
     private String[] autowiring;
     private boolean configType;
@@ -113,16 +115,16 @@ public class Parser {
     public void getAnnotationConfigData(Element root){
         Element child = root.getFirstChildElement("beans"); // este saca un hijo que tenga de tag el nombre que le paso
         Elements children = child.getChildElements(); //este saca todos los hijos de ese elemento, que serian todos los messages
-        int childrenSize = children.size();
-        this.classes = new String[childrenSize];
-        this.autowiring = new String[childrenSize];
         Element component_scan = root.getFirstChildElement("components-scan");
         if(component_scan!=null){
-            Elements component_scan_children = component_scan.getChildElements(); //saco tags de paquetes
-            this.packages = new String[component_scan_children.size()];
-            for(int i = 0; i < component_scan_children.size(); i++){
+            Elements component_scan_children = component_scan.getChildElements(); //saco tags de paquetes;
+            int childrenSize = component_scan_children.size();
+            this.classes = new String[childrenSize];
+            this.autowiring = new String[childrenSize];
+            for(int i = 0; i < childrenSize; i++){
                 child = component_scan_children.get(i);
-                this.packages[i] = child.getAttribute(0).getValue();
+                this.classes[i] = child.getAttributeValue("class");
+                this.autowiring[i] = child.getAttributeValue("autowiring");
             }
         } else {
             System.out.println("A components-scan tag must be specified for annotation configuration.");
@@ -130,30 +132,6 @@ public class Parser {
     }
 
 
-    public void printData(){ //quitar, solo por prueba.
-        System.out.println("Ids de beans");
-        for (int i = 0; i < this.beans.length; i++) {
-            System.out.println(this.beans[i]);
-        }
-        System.out.println("\nClases de beans");
-        for (int i = 0; i < this.classes.length; i++) {
-            System.out.println(this.classes[i]);
-        }
-        List prop2;
-        Pair pair2;
-        Iterator it = this.properties.entrySet().iterator(); //itera por cada entrada del mapa
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next(); //saca una entrada
-            System.out.println("\nPropiedades de " + pair.getKey() + ":");
-            prop2 = (LinkedList) pair.getValue(); //casteo el value a lista
-            Iterator it2 = prop2.iterator(); //itera sobre la lista
-            while (it2.hasNext()) {
-                pair2 = (Pair) it2.next();
-                System.out.println(pair2.getKey().toString() + "=" + pair2.getValue().toString());
-            }
-            it.remove(); //segun StackOverflow evita problemas de concurrencia
-        }
-    }
 
     /**
      * Returns an array of bean IDs.
@@ -178,14 +156,6 @@ public class Parser {
      */
     public List<Pair<String, String>> getBeanProperties(String beanClass) {
         return this.properties.get(beanClass);
-    }
-
-    /**
-     * Returns an array filled with packages to scan, if annotations were used.
-     * @return the package array.
-     */
-    public String[] getPackages(){
-        return this.packages;
     }
 
     /**
